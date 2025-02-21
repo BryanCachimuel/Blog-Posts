@@ -6,6 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 # Instancia para la base de datos
 db = SQLAlchemy()
 
+# Importando los modelos
+from .models import User, Post
+
 # importando las vistas creadas desde home.py
 from blogr import home
 
@@ -34,5 +37,9 @@ def create_app():
 
     # registrar el Blueprint de post 
     app.register_blueprint(post.bp)
+
+    # migrar todos los modelos creados
+    with app.app_context():
+        db.create_all()
 
     return app
