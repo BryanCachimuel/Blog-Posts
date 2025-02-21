@@ -1,5 +1,11 @@
 from flask import Flask
 
+# Importando el proceso para la conexión hacia la base de datos
+from flask_sqlalchemy import SQLAlchemy
+
+# Instancia para la base de datos
+db = SQLAlchemy()
+
 # importando las vistas creadas desde home.py
 from blogr import home
 
@@ -13,6 +19,12 @@ def create_app():
 
     # Crear la aplicación de flask
     app = Flask(__name__)
+
+    # Importando la configuración de la clase Config realizada en el archivo config.py
+    app.config.from_object('config.Config')
+
+    # Inicializando la base de datos
+    db.init_app(app)
 
     # registrar el Blueprint de home
     app.register_blueprint(home.bp)
