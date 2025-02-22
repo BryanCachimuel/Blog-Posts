@@ -5,7 +5,7 @@
  <section class="container">
     <div class="row">
         <div class="col-md-6 py-5">
-            <h1 class="display-4 fst-italic">Bienvenido a BLOG SPOTS</h1>
+            <h1 class="display-4 fst-italic">{% block title %} Bienvenido a BLOG SPOTS {% endblock %}</h1>
             <p>Aquí podrás compartir tus ideas, pensamientos y experiencias con una comunidad global de lectores.
                 Nuestra plataforma es fácil de usar y te permite publicar tus blogs en pocos pasos.
             </p>
@@ -17,7 +17,7 @@
             <p>
                 ¡Únete a nuestra comunidad hoy y comienza a compartir tus ideas con el mundo!
             </p>
-            <a href="auth/register.html" class="btn btn-outline-dark w-50 fs-3">Registrate</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-outline-dark w-50 fs-3">Registrate</a>
 
         </div>
         <div class="col-md-6">
