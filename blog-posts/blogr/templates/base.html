@@ -66,6 +66,20 @@
     </header>
     {% endblock %}
 
+    <!-- mostrando mensajes de error -->
+    {% for message in get_flashed_messages() %}
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
     <!-- Sección de bloque de contenido -->
     {% block content %}
     {% endblock %}
