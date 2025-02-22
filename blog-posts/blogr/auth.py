@@ -55,6 +55,32 @@ def login():
 
     return render_template('auth/login.html')
 
+# Mantener a un usuario logeado
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = User.query.get_or_404(user_id)
+
+# Cerrar sesión
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home.index'))
+
+# Decorador para afirmar que es necesario iniciar sesión para acceder a determinadas vistas
+import functools
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+        return view(**kwargs)
+    return wrapped_view
 
 @bp.route('/profile')
 def profile():
