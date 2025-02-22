@@ -32,9 +32,29 @@ def register():
         flash(error)
     return render_template('auth/register.html')
 
-@bp.route('/login')
+@bp.route('/login', methods = ('GET', 'POST'))
 def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        # validando datos
+        error = None
+        user = User.query.filter_by(email = email).first()
+
+        if user == None or not check_password_hash(user.password, password):
+            error = 'Correo o contraseña incorrecto'
+
+        # Inciando sesión
+        if error is None:
+            session.clear()
+            session['user_id'] = user.id
+            return redirect(url_for('post.posts'))
+        
+        flash(error)
+
     return render_template('auth/login.html')
+
 
 @bp.route('/profile')
 def profile():
