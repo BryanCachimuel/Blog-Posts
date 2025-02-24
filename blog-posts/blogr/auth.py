@@ -82,6 +82,27 @@ def login_required(view):
         return view(**kwargs)
     return wrapped_view
 
-@bp.route('/profile')
-def profile():
-    return 'Página de Perfil'
+@bp.route('/profile/<int:id>', methods=('GET', 'POST'))
+@login_required
+def profile(id):
+    user = User.query.get_or_404(id)
+
+    if request.method == 'POST':
+        user.username = request.form.get('username')
+        password = request.form.get('password')
+
+        error = None
+        if len(password) != 0:
+            user.password = generate_password_hash(password)
+        elif len(password) > 0 and len(password) < 6:
+            error = 'La contraseña deve terner mas 5 caracteres'
+
+        if error is not None:
+            flash(error)
+        else:
+            db.session.commit()
+            return redirect(url_for('auth.profile', id = user.id))
+        
+        flash(error)
+
+    return render_template('auth/profile.html', user = user)
