@@ -18,6 +18,9 @@ from blogr import auth
 # importando las vistas creadas desde post.py
 from blogr import post
 
+# Importando ckeditor
+from flask_ckeditor import CKEditor
+
 def create_app():
 
     # Crear la aplicación de flask
@@ -28,6 +31,9 @@ def create_app():
 
     # Inicializando la base de datos
     db.init_app(app)
+
+    # librería ckeditor
+    ckeditor = CKEditor(app)
 
     # registrar el Blueprint de home
     app.register_blueprint(home.bp)

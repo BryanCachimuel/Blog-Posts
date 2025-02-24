@@ -8,3 +8,6 @@ class Config:
 
     # conexión realizada hacia la base de datos
     SQLALCHEMY_DATABASE_URI = POSTGRESQL
+
+    # agregando la librería ckeditor
+    CKEDITOR_PKG_TYPE = 'basic'
