@@ -86,20 +86,10 @@ def login_required(view):
 # Editar Perfil
 from werkzeug.utils import secure_filename
 
-def  get_photo(id):
-    user = User.query.get_or_404(id)
-    photo = None
-
-    if photo != None:
-        photo = user.photo
-
-    return photo
-
 @bp.route('/profile/<int:id>', methods=('GET', 'POST'))
 @login_required
 def profile(id):
     user = User.query.get_or_404(id)
-    photo = get_photo(id)
 
     if request.method == 'POST':
         user.username = request.form.get('username')
@@ -125,4 +115,4 @@ def profile(id):
         
         flash(error)
 
-    return render_template('auth/profile.html', user = user, photo = photo)
+    return render_template('auth/profile.html', user = user)
