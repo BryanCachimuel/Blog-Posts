@@ -39,6 +39,17 @@ def create():
 
     return render_template('admin/create.html')
 
-@bp.route('/update')
-def update():
-    return 'Página de Actualización de Publicaciones'
+@bp.route('/update/<int:id>', methods=('GET','POST'))
+@login_required
+def update(id):
+    post = Post.query.get_or_404(id)
+
+    if request.method == 'POST':
+        post.title = request.form.get('title')
+        post.info = request.form.get('info')
+        post.content = request.form.get('ckeditor')
+
+        db.session.commit()
+        flash(f'El blog {post.title} se actuaolizo correctamente')
+        return redirect(url_for('post.posts'))
+    return render_template('admin/update.html', post = post)
