@@ -6,12 +6,14 @@ from blogr import db
 
 bp = Blueprint('post', __name__, url_prefix='/post')
 
+# listar en la vista de post todos los posts registrados
 @bp.route('/posts')
 @login_required
 def posts():
     posts = Post.query.all()
     return render_template('admin/posts.html', posts = posts)
 
+# crear un post
 @bp.route('/create', methods=('GET','POST'))
 @login_required
 def create():
@@ -39,6 +41,7 @@ def create():
 
     return render_template('admin/create.html')
 
+# actualizar un post
 @bp.route('/update/<int:id>', methods=('GET','POST'))
 @login_required
 def update(id):
@@ -53,3 +56,14 @@ def update(id):
         flash(f'El blog {post.title} se actuaolizo correctamente')
         return redirect(url_for('post.posts'))
     return render_template('admin/update.html', post = post)
+
+# eliminar un post
+@bp.route('/delete/<int:id>')
+@login_required
+def delete(id):
+    post = Post.query.get_or_404(id)
+    db.session.delete(post)
+    db.session.commit()
+    flash(f'El blog {post.title} se elimino correctamente')
+
+    return redirect(url_for('post.posts'))
