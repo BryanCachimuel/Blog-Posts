@@ -12,9 +12,32 @@ def posts():
     posts = Post.query.all()
     return render_template('admin/posts.html', posts = posts)
 
-@bp.route('/create')
+@bp.route('/create', methods=('GET','POST'))
+@login_required
 def create():
-    return 'Página de Creación de Publicaciones'
+    if request.method == 'POST':
+        url = request.form.get('url')
+        url = url.replace(' ','-')
+        title = request.form.get('title')
+        info = request.form.get('info')
+        content = request.form.get('ckeditor')
+
+        post = Post(g.user.id, url, title, info, content)
+
+        error = None
+
+        # Comparando url de post con los existentes
+        post_url = Post.query.filter_by(url = url).first()
+        if post_url == None:
+            db.session.add(post)
+            db.session.commit()
+            flash(f'El blog {post.title} se registro correctamente')
+            return redirect(url_for('post.posts'))
+        else:
+            error = f'El URL {url} ya está registrado'
+        flash(error)
+
+    return render_template('admin/create.html')
 
 @bp.route('/update')
 def update():
