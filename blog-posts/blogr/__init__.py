@@ -21,6 +21,11 @@ from blogr import post
 # Importando ckeditor
 from flask_ckeditor import CKEditor
 
+# importando el idioma local
+import locale
+locale.setlocale(locale.LC_ALL, 'es_ES')
+
+
 def create_app():
 
     # Crear la aplicación de flask
